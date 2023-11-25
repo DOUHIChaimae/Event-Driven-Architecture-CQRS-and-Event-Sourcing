@@ -3,10 +3,9 @@ package ma.enset.accountserviceaxon.commands.controllers;
 import ma.enset.accountserviceaxon.communapi.commands.CreateAccountCommand;
 import ma.enset.accountserviceaxon.communapi.dtos.CreateAccountRequestDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -28,5 +27,10 @@ public class AccountCommandController {
                 request.getCurrency(),
                 request.getInitialBalance()
         ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> exceptionHandler(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
