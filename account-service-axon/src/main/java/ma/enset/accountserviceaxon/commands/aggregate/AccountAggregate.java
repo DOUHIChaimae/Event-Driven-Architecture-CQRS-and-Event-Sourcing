@@ -2,8 +2,10 @@ package ma.enset.accountserviceaxon.commands.aggregate;
 
 import ma.enset.accountserviceaxon.communapi.commands.CreateAccountCommand;
 import ma.enset.accountserviceaxon.communapi.enums.AccountStatus;
+import ma.enset.accountserviceaxon.communapi.events.AccountCreatedEvent;
 import ma.enset.accountserviceaxon.communapi.exceptions.NegativeBalanceException;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
@@ -23,7 +25,12 @@ public class AccountAggregate {
     @CommandHandler
     public AccountAggregate(CreateAccountCommand command) {
         if(command.getInitialBalance() < 0) throw new NegativeBalanceException("Initial balance cannot be negative");
-        apply(command);
+        AggregateLifecycle.apply(new AccountCreatedEvent(
+                command.getId(),
+                command.getCurrency(),
+                command.getInitialBalance(),
+                AccountStatus.CREATED
+        ));
     }
 
 
