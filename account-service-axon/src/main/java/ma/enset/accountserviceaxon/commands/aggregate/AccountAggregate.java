@@ -5,6 +5,7 @@ import ma.enset.accountserviceaxon.communapi.enums.AccountStatus;
 import ma.enset.accountserviceaxon.communapi.events.AccountCreatedEvent;
 import ma.enset.accountserviceaxon.communapi.exceptions.NegativeBalanceException;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
@@ -31,6 +32,14 @@ public class AccountAggregate {
                 command.getInitialBalance(),
                 AccountStatus.CREATED
         ));
+    }
+
+    @EventSourcingHandler
+    public void on(AccountCreatedEvent event) {
+        this.accountId = event.getId();
+        this.balance = event.getBalance();
+        this.currency = event.getCurrency();
+        this.status = event.getStatus();
     }
 
 
