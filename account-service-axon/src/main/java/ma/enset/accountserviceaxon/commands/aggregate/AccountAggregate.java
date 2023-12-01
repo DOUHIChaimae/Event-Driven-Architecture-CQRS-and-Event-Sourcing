@@ -2,6 +2,7 @@ package ma.enset.accountserviceaxon.commands.aggregate;
 
 import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.enums.AccountStatus;
+import ma.enset.accountserviceaxon.commonapi.events.AccountActivatedEvent;
 import ma.enset.accountserviceaxon.commonapi.events.AccountCreatedEvent;
 import ma.enset.accountserviceaxon.commonapi.exceptions.NegativeBalanceException;
 import org.axonframework.commandhandling.CommandHandler;
@@ -27,7 +28,7 @@ public class AccountAggregate {
     //Fonction de décision
     @CommandHandler
     public AccountAggregate(CreateAccountCommand command) {
-        if(command.getInitialBalance() < 0) throw new NegativeBalanceException("Initial balance cannot be negative");
+        if (command.getInitialBalance() < 0) throw new NegativeBalanceException("Initial balance cannot be negative");
         AggregateLifecycle.apply(new AccountCreatedEvent(
                 command.getId(),
                 command.getCurrency(),
@@ -41,6 +42,14 @@ public class AccountAggregate {
         this.accountId = event.getId();
         this.balance = event.getBalance();
         this.currency = event.getCurrency();
+        this.status = event.getStatus();
+        AggregateLifecycle.apply(new AccountActivatedEvent(
+                event.getId(),
+                AccountStatus.ACTIVATED));
+    }
+
+    @EventSourcingHandler
+    public void on(AccountActivatedEvent event) {
         this.status = event.getStatus();
     }
 

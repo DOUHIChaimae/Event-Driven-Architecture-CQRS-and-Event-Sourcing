@@ -195,7 +195,18 @@ public class AccountCreatedEvent extends BaseEvent<String> {
 }
 ```
 **AggregateLifecycle.apply()** est une méthode qui publie un événement sur le bus d'événements. Cet événement sera ensuite envoyé à tous les gestionnaires d'événements qui l'écoutent et transférer les données de la commande vers l'événement.
+* AccountActivatedEvent
+```java
+public class AccountActivatedEvent extends BaseEvent<String> {
+    @Getter
+    public AccountStatus status;
 
+    public AccountActivatedEvent(String id, AccountStatus status) {
+        super(id);
+        this.status = status;
+    }
+}
+```
 #### Création des commandes
 ![img_5.png](img_5.png)
 
