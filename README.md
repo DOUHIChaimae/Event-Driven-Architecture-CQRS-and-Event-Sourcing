@@ -8,7 +8,7 @@ L'objectif principal de cette activité est de familiariser avec les concepts de
 
 ### Réalisation de l'activité 💡
 #### 1. Création du projet
-Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un projet Maven avec les dépendances suivantes :
+Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un projet Maven avec les dépendances suivantes:
 - Spring Web
 - Spring Data JPA
 - Axon Framework
