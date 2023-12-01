@@ -253,5 +253,82 @@ public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequest
 ```
 Dans l'agrégat, on va créer une méthode pour gérer la commande CreditAccountCommand.
 ```java
+    @CommandHandler
+    public void handle(CreditAccountCommand command) {
+        if (command.getAmount() < 0) throw new AmountNegativeException("Cannot credit a negative amount");
+        AggregateLifecycle.apply(new AccountCreditedEvent(
+                command.getId(),
+                command.getCurrency(),
+                command.getAmount()
+        ));
+    }
+```
+On va créer une méthode pour gérer l'événement AccountCreditedEvent et pour muter l'état de l'application.
+```java
+    @EventSourcingHandler
+    public void on(AccountCreditedEvent event) {
+        this.balance += event.getAmount();
+    }
+```
+![img_10.png](img_10.png)
+![img_9.png](img_9.png)
+![img_11.png](img_11.png)
+
+* DebitAccountCommand
+```java
+public class DebitAccountCommand extends BaseCommand<String> {
+    @Getter private double amount;
+    @Getter private String currency;
+
+    public DebitAccountCommand(String id, double amount, String currency) {
+        super(id);
+        this.amount = amount;
+        this.currency = currency;
+
+    }
+}    
+```
+
+* AccountDebitedEvent
+```java
+
+Dans le contrôleur, on va créer une méthode pour débiter un compte.
+```java
+ @PutMapping("/debit")
+    public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequestDto request) {
+        return commandGateway.send(new DebitAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
+                request.getCurrency()
+        ));
+    }
+```
+Dans l'agrégat, on va créer une méthode pour gérer la commande DebitAccountCommand.
+
+```java
+    @CommandHandler
+    public void handle(DebitAccountCommand command) {
+        if (command.getAmount() < 0) throw new AmountNegativeException("Cannot debit a negative amount");
+        if (this.balance - command.getAmount() < 0) throw new InsufficientBalanceException("Insufficient balance");
+        AggregateLifecycle.apply(new AccountDebitedEvent(
+                command.getId(),
+                command.getCurrency(),
+                command.getAmount()
+        ));
+    }
+```
+
+On va créer une méthode pour gérer l'événement AccountDebitedEvent et pour muter l'état de l'application.
+
+```java
+    @EventSourcingHandler
+    public void on(AccountDebitedEvent event) {
+        this.balance -= event.getAmount();
+    }
+```
+![img_14.png](img_14.png)
+![img_15.png](img_15.png)
+![img_16.png](img_16.png)
+![img_17.png](img_17.png)
 ### 2) Query Side
 

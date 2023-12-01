@@ -2,8 +2,10 @@ package ma.enset.accountserviceaxon.commands.controllers;
 
 import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.commands.CreditAccountCommand;
+import ma.enset.accountserviceaxon.commonapi.commands.DebitAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.dtos.CreateAccountRequestDto;
 import ma.enset.accountserviceaxon.commonapi.dtos.CreditAccountRequestDto;
+import ma.enset.accountserviceaxon.commonapi.dtos.DebitAccountRequestDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,15 @@ public class AccountCommandController {
     @PutMapping("/credit")
     public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequestDto request) {
         return commandGateway.send(new CreditAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
+                request.getCurrency()
+        ));
+    }
+
+    @PutMapping("/debit")
+    public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequestDto request) {
+        return commandGateway.send(new DebitAccountCommand(
                 request.getAccountId(),
                 request.getAmount(),
                 request.getCurrency()

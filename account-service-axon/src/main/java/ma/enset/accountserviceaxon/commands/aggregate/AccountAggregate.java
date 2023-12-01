@@ -2,10 +2,13 @@ package ma.enset.accountserviceaxon.commands.aggregate;
 
 import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.commands.CreditAccountCommand;
+import ma.enset.accountserviceaxon.commonapi.commands.DebitAccountCommand;
+import ma.enset.accountserviceaxon.commonapi.dtos.InsufficientBalanceException;
 import ma.enset.accountserviceaxon.commonapi.enums.AccountStatus;
 import ma.enset.accountserviceaxon.commonapi.events.AccountActivatedEvent;
 import ma.enset.accountserviceaxon.commonapi.events.AccountCreatedEvent;
 import ma.enset.accountserviceaxon.commonapi.events.AccountCreditedEvent;
+import ma.enset.accountserviceaxon.commonapi.events.AccountDebitedEvent;
 import ma.enset.accountserviceaxon.commonapi.exceptions.AmountNegativeException;
 import ma.enset.accountserviceaxon.commonapi.exceptions.NegativeBalanceException;
 import org.axonframework.commandhandling.CommandHandler;
@@ -70,5 +73,22 @@ public class AccountAggregate {
     public void on(AccountCreditedEvent event) {
         this.balance += event.getAmount();
     }
+
+    @CommandHandler
+    public void handle(DebitAccountCommand command) {
+        if (command.getAmount() < 0) throw new AmountNegativeException("Cannot credit a negative amount");
+        if (this.balance - command.getAmount() < 0) throw new InsufficientBalanceException("Insufficient balance " + balance);
+        AggregateLifecycle.apply(new AccountDebitedEvent(
+                command.getId(),
+                command.getCurrency(),
+                command.getAmount()
+        ));
+    }
+
+    @EventSourcingHandler
+    public void on(AccountDebitedEvent event) {
+        this.balance -= event.getAmount();
+    }
+
 
 }
