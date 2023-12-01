@@ -272,7 +272,9 @@ On va créer une méthode pour gérer l'événement AccountCreditedEvent et pour
     }
 ```
 ![img_10.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_10.png)
+
 ![img_9.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_9.png)
+
 ![img_11.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_11.png)
 
 * DebitAccountCommand
@@ -326,8 +328,11 @@ On va créer une méthode pour gérer l'événement AccountDebitedEvent et pour 
     }
 ```
 ![img_14.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_14.png)
+
 ![img_15.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_15.png)
+
 ![img_16.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_16.png)
+
 ![img_17.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_17.png)
 ### Query Side
 ![img.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_20.png)
