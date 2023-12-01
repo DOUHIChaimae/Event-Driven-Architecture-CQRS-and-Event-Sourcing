@@ -1,7 +1,7 @@
 ## Activité Pratique N°3 - Event Driven Architecture 📖🎓
 La conception et la mise en œuvre d'une application Java reposant sur les principes du modèle CQRS (Command Query Responsibility Segregation) et de l'Event Sourcing, avec l'utilisation des frameworks Axon et Spring Boot.
 
-![img.png](img.png)
+![img.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img.png)
 
 ### Objectifs de l'activité
 L'objectif principal de cette activité est de familiariser avec les concepts de CQRS et Event Sourcing, ainsi qu'avec les outils puissants que sont Axon Framework et Spring Boot. À la fin de cette activité, on va développer une compréhension pratique de la manière dont ces modèles architecturaux peuvent être appliqués pour construire des systèmes robustes et évolutifs.
@@ -17,14 +17,14 @@ Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un
 - Open API
 
 #### 2. Architecture de l'application
-![img_1.png](img_1.png)
+![img_1.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_1.png)
 #### 3. Commands and Events
-![img_4.png](img_4.png)
+![img_4.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_4.png)
 ##### Implémentation des commandes
 ###### **CommonApi**
 CommonApi contient les classes de base pour les commandes et les événements. Il contient également les annotations nécessaires pour identifier les agrégats et les événements.
 ### 1) Commands Side
-![img_18.png](img_18.png)
+![img_18.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_18.png)
 * BaseCommand
 Cette classe est la classe de base pour toutes les commandes. Elle contient l'identifiant de l'agrégat cible.
 ```java
@@ -162,7 +162,7 @@ public class AccountAggregate {
 * **CommandHandler** est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'une commande est reçue. Cette méthode est responsable de la validation des commandes et de la publication des événements == Fonction de décision.
 * **EventSourcingHandler** est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'un événement est reçu. Cette méthode est responsable de la mise à jour de l'état de l'agrégat == Fonction d'évolution.
 
-![img_6.png](img_6.png)
+![img_6.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_6.png)
 
 #### Création des événements
 * BaseEvent
@@ -208,9 +208,9 @@ public class AccountActivatedEvent extends BaseEvent<String> {
 }
 ```
 #### Création des commandes
-![img_5.png](img_5.png)
+![img_5.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_5.png)
 
-![img_7.png](img_7.png)
+![img_7.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_7.png)
 
 EventStore est une base de données qui stocke tous les événements qui ont été publiés par les agrégats. 
 
@@ -221,7 +221,7 @@ EventStore est une base de données qui stocke tous les événements qui ont ét
         return eventStore.readEvents(accountId).asStream();
     }
 ```
-![img_8.png](img_8.png)
+![img_8.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_8.png)
 
 * AccountCreditedEvent
 ```java
@@ -270,9 +270,9 @@ On va créer une méthode pour gérer l'événement AccountCreditedEvent et pour
         this.balance += event.getAmount();
     }
 ```
-![img_10.png](img_10.png)
-![img_9.png](img_9.png)
-![img_11.png](img_11.png)
+![img_10.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_10.png)
+![img_9.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_9.png)
+![img_11.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_11.png)
 
 * DebitAccountCommand
 ```java
@@ -326,12 +326,12 @@ On va créer une méthode pour gérer l'événement AccountDebitedEvent et pour 
         this.balance -= event.getAmount();
     }
 ```
-![img_14.png](img_14.png)
-![img_15.png](img_15.png)
-![img_16.png](img_16.png)
-![img_17.png](img_17.png)
+![img_14.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_14.png)
+![img_15.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_15.png)
+![img_16.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_16.png)
+![img_17.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_17.png)
 ### 2) Query Side
-![img_19.png](img_19.png)
+![img_19.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_19.png)
 #### JPA entities
 * Account Entity
 ```java
