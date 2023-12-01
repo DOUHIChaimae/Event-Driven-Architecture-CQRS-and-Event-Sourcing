@@ -222,5 +222,36 @@ EventStore est une base de données qui stocke tous les événements qui ont ét
     }
 ```
 ![img_8.png](img_8.png)
+
+* AccountCreditedEvent
+```java
+public class AccountCreditedEvent extends BaseEvent<String> {
+    @Getter
+    public String currency;
+    @Getter
+    public double amount;
+
+
+    public AccountCreditedEvent(String id, String currency, double amount) {
+        super(id);
+        this.currency = currency;
+        this.amount = amount;
+    }
+}
+```
+
+Dans le contrôleur, on va créer une méthode pour créditer un compte.
+```java
+@PutMapping("/credit") 
+public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequestDto request) {
+    return commandGateway.send(new CreditAccountCommand(
+    request.getAccountId(),
+    request.getAmount(),
+    request.getCurrency()
+    ));
+}
+```
+Dans l'agrégat, on va créer une méthode pour gérer la commande CreditAccountCommand.
+```java
 ### 2) Query Side
 

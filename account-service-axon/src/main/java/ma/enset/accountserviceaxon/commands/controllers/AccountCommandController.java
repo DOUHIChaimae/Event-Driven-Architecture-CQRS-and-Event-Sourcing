@@ -1,7 +1,9 @@
 package ma.enset.accountserviceaxon.commands.controllers;
 
 import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
+import ma.enset.accountserviceaxon.commonapi.commands.CreditAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.dtos.CreateAccountRequestDto;
+import ma.enset.accountserviceaxon.commonapi.dtos.CreditAccountRequestDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +46,13 @@ public class AccountCommandController {
         return eventStore.readEvents(accountId).asStream();
     }
 
+    @PutMapping("/credit")
+    public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequestDto request) {
+        return commandGateway.send(new CreditAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
+                request.getCurrency()
+        ));
+    }
 
 }

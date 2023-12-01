@@ -1,9 +1,12 @@
 package ma.enset.accountserviceaxon.commands.aggregate;
 
 import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
+import ma.enset.accountserviceaxon.commonapi.commands.CreditAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.enums.AccountStatus;
 import ma.enset.accountserviceaxon.commonapi.events.AccountActivatedEvent;
 import ma.enset.accountserviceaxon.commonapi.events.AccountCreatedEvent;
+import ma.enset.accountserviceaxon.commonapi.events.AccountCreditedEvent;
+import ma.enset.accountserviceaxon.commonapi.exceptions.AmountNegativeException;
 import ma.enset.accountserviceaxon.commonapi.exceptions.NegativeBalanceException;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -53,5 +56,14 @@ public class AccountAggregate {
         this.status = event.getStatus();
     }
 
+    @CommandHandler
+    public void handle(CreditAccountCommand command) {
+        if (command.getAmount() < 0) throw new AmountNegativeException("Cannot credit a negative amount");
+        AggregateLifecycle.apply(new AccountCreditedEvent(
+                command.getId(),
+                command.getCurrency(),
+                command.getAmount()
+        ));
+    }
 
 }
