@@ -1,4 +1,4 @@
-package ma.enset.accountserviceaxon.communapi.enums;
+package ma.enset.accountserviceaxon.commonapi.enums;
 
 public enum AccountStatus {
 

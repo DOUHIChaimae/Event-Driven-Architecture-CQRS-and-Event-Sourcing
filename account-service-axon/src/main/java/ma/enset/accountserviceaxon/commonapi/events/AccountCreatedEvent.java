@@ -1,8 +1,7 @@
-package ma.enset.accountserviceaxon.communapi.events;
+package ma.enset.accountserviceaxon.commonapi.events;
 
 import lombok.Getter;
-import ma.enset.accountserviceaxon.communapi.enums.AccountStatus;
-import org.springframework.boot.autoconfigure.quartz.QuartzTransactionManager;
+import ma.enset.accountserviceaxon.commonapi.enums.AccountStatus;
 
 public class AccountCreatedEvent extends BaseEvent<String> {
     @Getter

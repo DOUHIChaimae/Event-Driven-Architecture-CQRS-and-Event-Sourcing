@@ -1,4 +1,4 @@
-package ma.enset.accountserviceaxon.conf;
+package ma.enset.accountserviceaxon.commonapi.conf;
 
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.SimpleCommandBus;

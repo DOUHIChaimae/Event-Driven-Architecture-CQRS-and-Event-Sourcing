@@ -1,4 +1,4 @@
-package ma.enset.accountserviceaxon.communapi.commands;
+package ma.enset.accountserviceaxon.commonapi.commands;
 
 import lombok.Getter;
 

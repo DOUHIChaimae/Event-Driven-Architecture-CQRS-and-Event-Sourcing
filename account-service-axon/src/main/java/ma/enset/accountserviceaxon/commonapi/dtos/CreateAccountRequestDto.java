@@ -1,4 +1,4 @@
-package ma.enset.accountserviceaxon.communapi.dtos;
+package ma.enset.accountserviceaxon.commonapi.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

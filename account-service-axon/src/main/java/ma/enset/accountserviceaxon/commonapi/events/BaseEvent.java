@@ -1,4 +1,4 @@
-package ma.enset.accountserviceaxon.communapi.events;
+package ma.enset.accountserviceaxon.commonapi.events;
 
 import lombok.Getter;
 

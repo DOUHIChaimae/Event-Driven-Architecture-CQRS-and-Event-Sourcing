@@ -1,7 +1,7 @@
 package ma.enset.accountserviceaxon.commands.controllers;
 
-import ma.enset.accountserviceaxon.communapi.commands.CreateAccountCommand;
-import ma.enset.accountserviceaxon.communapi.dtos.CreateAccountRequestDto;
+import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
+import ma.enset.accountserviceaxon.commonapi.dtos.CreateAccountRequestDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping("/commands/accounts")
+@RequestMapping("/commands/account")
 public class AccountCommandController {
 
     private CommandGateway commandGateway;
