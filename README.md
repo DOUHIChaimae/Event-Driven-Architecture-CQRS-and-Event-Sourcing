@@ -380,4 +380,23 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 public interface OperationRepository extends JpaRepository<Operation, Long> {
 }
 ```
+#### Services
+* AccountService
+```java
+public class AccountServiceHandler {
+    AccountRepository accountRepository;
+    OperationRepository operationRepository;
+
+    @EventHandler
+    public void on(AccountCreatedEvent event) {
+        log.info("AccountCreatedEvent received...");
+        Account account = new Account();
+        account.setId(event.getId());
+        account.setBalance(event.getBalance());
+        account.setCurrency(event.getCurrency());
+        account.setStatus(event.getStatus());
+        accountRepository.save(account);
+    }
+}
+```
 
