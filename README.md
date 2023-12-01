@@ -3,10 +3,10 @@ La conception et la mise en œuvre d'une application Java reposant sur les princ
 
 ![img.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img.png)
 
-### Objectifs de l'activité
+### Objectifs de l'activité 🧐
 L'objectif principal de cette activité est de familiariser avec les concepts de CQRS et Event Sourcing, ainsi qu'avec les outils puissants que sont Axon Framework et Spring Boot. À la fin de cette activité, on va développer une compréhension pratique de la manière dont ces modèles architecturaux peuvent être appliqués pour construire des systèmes robustes et évolutifs.
 
-### Réalisation de l'activité
+### Réalisation de l'activité 💡
 #### 1. Création du projet
 Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un projet Maven avec les dépendances suivantes :
 - Spring Web
@@ -20,12 +20,13 @@ Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un
 ![img_1.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_1.png)
 #### 3. Commands and Events
 ![img_4.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_4.png)
-##### Implémentation des commandes
-###### **CommonApi**
-CommonApi contient les classes de base pour les commandes et les événements. Il contient également les annotations nécessaires pour identifier les agrégats et les événements.
-### 1) Commands Side
+### Commands Side
 ![img_18.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_18.png)
+
+#### **CommonApi**
+CommonApi contient les classes de base pour les commandes et les événements. Il contient également les annotations nécessaires pour identifier les agrégats et les événements.
 * BaseCommand
+
 Cette classe est la classe de base pour toutes les commandes. Elle contient l'identifiant de l'agrégat cible.
 ```java
 public abstract class BaseCommand<T> {
@@ -328,7 +329,7 @@ On va créer une méthode pour gérer l'événement AccountDebitedEvent et pour 
 ![img_15.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_15.png)
 ![img_16.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_16.png)
 ![img_17.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_17.png)
-### 2) Query Side
+### Query Side
 ![img_19.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_19.png)
 #### JPA entities
 * Account Entity
