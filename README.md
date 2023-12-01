@@ -1,4 +1,4 @@
-## Activité Pratique N°3 - Event Driven Architecture 📖🎓
+## ***Activité Pratique N°3 - Event Driven Architecture*** 
 La conception et la mise en œuvre d'une application Java reposant sur les principes du modèle CQRS (Command Query Responsibility Segregation) et de l'Event Sourcing, avec l'utilisation des frameworks Axon et Spring Boot.
 
 ![img.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img.png)
