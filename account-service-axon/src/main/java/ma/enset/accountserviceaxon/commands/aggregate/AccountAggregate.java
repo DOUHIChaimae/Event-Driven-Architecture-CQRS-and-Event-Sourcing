@@ -66,4 +66,9 @@ public class AccountAggregate {
         ));
     }
 
+    @EventSourcingHandler
+    public void on(AccountCreditedEvent event) {
+        this.balance += event.getAmount();
+    }
+
 }
