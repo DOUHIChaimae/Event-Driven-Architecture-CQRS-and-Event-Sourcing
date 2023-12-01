@@ -290,8 +290,6 @@ public class DebitAccountCommand extends BaseCommand<String> {
 ```
 
 * AccountDebitedEvent
-```java
-
 Dans le contrôleur, on va créer une méthode pour débiter un compte.
 ```java
  @PutMapping("/debit")
