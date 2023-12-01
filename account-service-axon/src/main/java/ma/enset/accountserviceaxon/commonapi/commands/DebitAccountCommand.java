@@ -9,6 +9,5 @@ public class DebitAccountCommand extends BaseCommand<String> {
         this.amount = amount;
         this.currency = currency;
 
-
     }
 }

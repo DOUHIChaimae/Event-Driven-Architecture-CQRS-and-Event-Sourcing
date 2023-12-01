@@ -55,9 +55,152 @@ public class CreateAccountCommand extends BaseCommand<String> {
     }
 }
 ```
+* CreditAccountCommand
+```java
+public class CreditAccountCommand extends BaseCommand<String> {
+    private double amount;
+    private String currency;
 
-#### 3. Commands side
-![img_2.png](img_2.png)
+    public CreditAccountCommand(String id, double amount, String currency) {
+        super(id);
+        this.amount = amount;
+        this.currency = currency;
+
+    }
+}
+```
+* DebitAccountCommand
+```java
+public class DebitAccountCommand extends BaseCommand<String> {
+    private double amount;
+    private String currency;
+
+    public DebitAccountCommand(String id, double amount, String currency) {
+        super(id);
+        this.amount = amount;
+        this.currency = currency;
+
+    }
+}
+```
+* AccountCommandController
+Ce contrôleur est responsable de la réception des commandes et de leur envoi au bus de commande. 
+
+```java
+@RestController
+@RequestMapping("/commands/account")
+public class AccountCommandController {
+
+    private CommandGateway commandGateway;
+
+    public AccountCommandController(CommandGateway commandGateway) {
+        this.commandGateway = commandGateway;
+    }
+
+    @PostMapping("/create")
+    public CompletableFuture<String> createNewAccount(@RequestBody CreateAccountRequestDto request) {
+        return commandGateway.send(new CreateAccountCommand(
+                UUID.randomUUID().toString(),
+                request.getCurrency(),
+                request.getInitialBalance()
+        ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> exceptionHandler(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+#### Handlers
+```java
+@ExceptionHandler(Exception.class)
+    public ResponseEntity<String> exceptionHandler(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+```
+#### Aggregate
+Cette classe est responsable de la gestion des commandes et de la publication des événements. Elle est annotée avec @Aggregate.
+```java
+@Aggregate
+public class AccountAggregate {
+    @AggregateIdentifier
+    private String accountId;
+    private double balance;
+    private String currency;
+
+    private AccountStatus status;
+
+    public AccountAggregate() {
+        // Required by Axon to build a default Aggregate prior to Event Sourcing
+    }
+    
+    @CommandHandler
+    public AccountAggregate(CreateAccountCommand command) {
+        if(command.getInitialBalance() < 0) throw new NegativeBalanceException("Initial balance cannot be negative");
+        AggregateLifecycle.apply(new AccountCreatedEvent(
+                command.getId(),
+                command.getCurrency(),
+                command.getInitialBalance(),
+                AccountStatus.CREATED
+        ));
+    }
+
+    @EventSourcingHandler
+    public void on(AccountCreatedEvent event) {
+        this.accountId = event.getId();
+        this.balance = event.getBalance();
+        this.currency = event.getCurrency();
+        this.status = event.getStatus();
+    }
+
+
+}
+```
+
+* CommandHandler est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'une commande est reçue. Cette méthode est responsable de la validation des commandes et de la publication des événements == Fonction de décision.
+* EventSourcingHandler est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'un événement est reçu. Cette méthode est responsable de la mise à jour de l'état de l'agrégat == Fonction d'évolution.
+
+![img_6.png](img_6.png)
+
+
+#### Création des événements
+* BaseEvent
+```java
+public class BaseEvent<T> {
+    @Getter
+    private T id;
+
+    public BaseEvent(T id) {
+        this.id = id;
+    }
+}
+```
+* AccountCreatedEvent
+```java
+public class AccountCreatedEvent extends BaseEvent<String> {
+    @Getter
+    public String currency;
+    @Getter
+    public double balance;
+    @Getter
+    private AccountStatus status;
+
+    public AccountCreatedEvent(String id, String currency, double balance, AccountStatus status) {
+        super(id);
+        this.currency = currency;
+        this.balance = balance;
+        this.status = status;
+    }
+}
+```
+AggregateLifecycle.apply() est une méthode qui publie un événement sur le bus d'événements. Cet événement sera ensuite envoyé à tous les gestionnaires d'événements qui l'écoutent et transférer les données de la commande vers l'événement.
+
 #### Création des commandes
+![img_5.png](img_5.png)
 
-![img_3.png](img_3.png)
+![img_7.png](img_7.png)
+
+
+
+
