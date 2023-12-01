@@ -330,7 +330,7 @@ On va créer une méthode pour gérer l'événement AccountDebitedEvent et pour 
 ![img_16.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_16.png)
 ![img_17.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_17.png)
 ### Query Side
-![img_19.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_19.png)
+![img.png](account-service-axon/src/main/java/ma/enset/accountserviceaxon/captures/img_20.png)
 #### JPA entities
 * Account Entity
 ```java
