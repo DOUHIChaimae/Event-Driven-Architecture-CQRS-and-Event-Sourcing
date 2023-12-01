@@ -3,18 +3,23 @@ package ma.enset.accountserviceaxon.commands.controllers;
 import ma.enset.accountserviceaxon.commonapi.commands.CreateAccountCommand;
 import ma.enset.accountserviceaxon.commonapi.dtos.CreateAccountRequestDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.eventsourcing.eventstore.EventStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/commands/account")
 public class AccountCommandController {
 
     private CommandGateway commandGateway;
+    @Autowired
+    private EventStore eventStore;
 
     public AccountCommandController(CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
@@ -33,4 +38,11 @@ public class AccountCommandController {
     public ResponseEntity<String> exceptionHandler(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping("/eventStore/{accountId}")
+    public Stream eventStore(@PathVariable String accountId) {
+        return eventStore.readEvents(accountId).asStream();
+    }
+
+
 }

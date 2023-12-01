@@ -18,12 +18,12 @@ Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un
 
 #### 2. Architecture de l'application
 ![img_1.png](img_1.png)
-#### 3. Commans and Events
+#### 3. Commands and Events
 ![img_4.png](img_4.png)
 ##### Implémentation des commandes
 ###### **CommonApi**
 CommonApi contient les classes de base pour les commandes et les événements. Il contient également les annotations nécessaires pour identifier les agrégats et les événements.
-1. Commands 
+### 1) Commands Side
 * BaseCommand
 Cette classe est la classe de base pour toutes les commandes. Elle contient l'identifiant de l'agrégat cible.
 ```java
@@ -37,7 +37,7 @@ public abstract class BaseCommand<T> {
     }
 }
 ```
-@TargetAggregateIdentifier est une annotation qui identifie l'agrégat cible d'une commande. Elle est utilisée pour déterminer l'instance de l'agrégat à laquelle la commande doit être envoyée.
+***@TargetAggregateIdentifier*** est une annotation qui identifie l'agrégat cible d'une commande. Elle est utilisée pour déterminer l'instance de l'agrégat à laquelle la commande doit être envoyée.
 Remarque: Les commandes sont des objets immuables. Cela signifie que les champs de la commande ne peuvent pas être modifiés après sa création. C'est pourquoi nous utilisons Lombok pour générer automatiquement les constructeurs et les getters.
 
 * CreateAccountCommand
@@ -158,8 +158,8 @@ public class AccountAggregate {
 }
 ```
 
-* CommandHandler est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'une commande est reçue. Cette méthode est responsable de la validation des commandes et de la publication des événements == Fonction de décision.
-* EventSourcingHandler est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'un événement est reçu. Cette méthode est responsable de la mise à jour de l'état de l'agrégat == Fonction d'évolution.
+* **CommandHandler** est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'une commande est reçue. Cette méthode est responsable de la validation des commandes et de la publication des événements == Fonction de décision.
+* **EventSourcingHandler** est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'un événement est reçu. Cette méthode est responsable de la mise à jour de l'état de l'agrégat == Fonction d'évolution.
 
 ![img_6.png](img_6.png)
 
@@ -194,13 +194,22 @@ public class AccountCreatedEvent extends BaseEvent<String> {
     }
 }
 ```
-AggregateLifecycle.apply() est une méthode qui publie un événement sur le bus d'événements. Cet événement sera ensuite envoyé à tous les gestionnaires d'événements qui l'écoutent et transférer les données de la commande vers l'événement.
+**AggregateLifecycle.apply()** est une méthode qui publie un événement sur le bus d'événements. Cet événement sera ensuite envoyé à tous les gestionnaires d'événements qui l'écoutent et transférer les données de la commande vers l'événement.
 
 #### Création des commandes
 ![img_5.png](img_5.png)
 
 ![img_7.png](img_7.png)
 
+EventStore est une base de données qui stocke tous les événements qui ont été publiés par les agrégats. 
 
-
+* Consultation de EventStore
+```java
+    @GetMapping("/eventStore/{accountId}")
+    public Stream eventStore(@PathVariable String accountId) {
+        return eventStore.readEvents(accountId).asStream();
+    }
+```
+![img_8.png](img_8.png)
+### 2) Query Side
 
