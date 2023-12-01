@@ -48,7 +48,7 @@ public class AccountAggregate {
         this.accountId = event.getId();
         this.balance = event.getBalance();
         this.currency = event.getCurrency();
-        this.status = event.getStatus();
+        this.status = AccountStatus.CREATED;
         AggregateLifecycle.apply(new AccountActivatedEvent(
                 event.getId(),
                 AccountStatus.ACTIVATED));

@@ -42,7 +42,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- axon framework -->
         <dependency>
             <groupId>org.axonframework</groupId>
@@ -55,8 +54,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-
     </dependencies>
 
     <build>

@@ -24,6 +24,7 @@ Pour créer le projet, on va utiliser l'outil Spring Initializr. On va créer un
 ###### **CommonApi**
 CommonApi contient les classes de base pour les commandes et les événements. Il contient également les annotations nécessaires pour identifier les agrégats et les événements.
 ### 1) Commands Side
+![img_18.png](img_18.png)
 * BaseCommand
 Cette classe est la classe de base pour toutes les commandes. Elle contient l'identifiant de l'agrégat cible.
 ```java
@@ -162,7 +163,6 @@ public class AccountAggregate {
 * **EventSourcingHandler** est une annotation qui indique à Axon que cette méthode doit être invoquée lorsqu'un événement est reçu. Cette méthode est responsable de la mise à jour de l'état de l'agrégat == Fonction d'évolution.
 
 ![img_6.png](img_6.png)
-
 
 #### Création des événements
 * BaseEvent
@@ -331,7 +331,8 @@ On va créer une méthode pour gérer l'événement AccountDebitedEvent et pour 
 ![img_16.png](img_16.png)
 ![img_17.png](img_17.png)
 ### 2) Query Side
-#### entities
+![img_19.png](img_19.png)
+#### JPA entities
 * Account Entity
 ```java
 @Entity
@@ -362,6 +363,17 @@ public class Operation {
     @ManyToOne
     private Account account;
 
+}
+```
+#### JPA repositories
+* AccountRepository
+```java
+public interface AccountRepository extends JpaRepository<Account, String> {
+}
+```
+* OperationRepository
+```java
+public interface OperationRepository extends JpaRepository<Operation, Long> {
 }
 ```
 
